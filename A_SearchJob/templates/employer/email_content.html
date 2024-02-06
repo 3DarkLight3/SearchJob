@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject }}</title>
+</head>
+<body>
+    <h2 style="text-align: center; margin-top: 10px; color: #162896">
+        Hello {{ resume.name }}! I am a bot from SearchJob.
+    </h2>
+
+    <p style="font-size: 20px; color: #162896">
+        You have received a response to your <a style="text-decoration: none; color: #3f6fd9" href="{{ prefix }}{% url 'employer:resume' resume.id %}">resume</a> - '{{ resume.type_of_job }}.'
+    </p>
+
+    <hr style="margin-top: 10px; margin-bottom: 10px;">
+
+    {% if not number_of_vacancies %}
+        <p style="font-size: 20px; color: #162896">
+            This company does not have any vacancy.
+        </p>
+    {% elif number_of_vacancies == 1 %}
+        <p style="font-size: 20px; color: #162896">
+            To see this company's vacancy, click <a style="text-decoration: none; color: #3f6fd9" href="{{ prefix }}{% url 'employee:vacancy' id_for_vacancy %}">here</a>.
+        </p>
+    {% else %}
+        <p style="font-size: 20px; color: #162896">
+            To see this company's vacancies click
+            {% for obj_id in id_for_vacancy %}
+                <a style="text-decoration: none; color: #3f6fd9; margin-left: 20px;" href="{{ prefix }}{% url 'employee:vacancy' obj_id %}">here</a>
+            {% endfor %}.
+        </p>
+    {% endif %}
+
+    <hr style="margin-top: 10px; margin-bottom: 10px;">
+
+    {% if number_of_vacancies %}
+        <p style="font-size: 20px; color: #162896">
+            All possible ways of contacting this company are collected here (they are not on the vacancy page, as this is personal information) :<br><br>
+            {% if number_of_vacancies == 1 %}
+                Phone number: {{ phone_number }}<br>
+                Email: {{ email }}
+            {% elif number_of_vacancies > 1 %}
+                {% for number in phone_number %}
+                    Phone number: {{ number }}<br>
+                {% endfor %}
+                <br>
+                {% for email_obj in email %}
+                    Email: {{ email_obj }}<br>
+                {% endfor %}
+            {% endif %}
+        </p>
+        <hr style="margin-top: 10px; margin-bottom: 10px;">
+    {% endif %}
+
+    <p style="font-size: 20px; color: #162896">
+        Thank you for using our services!
+    </p>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+{% extends 'story/base_story_block.html' %}
+
+{% block add_in_nav %}
+
+    <div class="text-end" style="margin-right: 10px; margin-top: 10px;">
+        <a href="{% if user_side == 'employee' %}{% url 'employer:home-employer' %}{% else %}{% url 'employee:home-employee' %}{% endif %}"><button style="font-size: 20px; border-radius: 10px;" type="button" class="btn btn-outline-primary me-2">{% if user_side == 'employee' %}Employer{% else %}Employee{% endif %}</button></a>
+        <a href="{% url 'users:logout' %}"><button style="font-size: 20px; border-radius: 10px;" type="button" class="btn btn-outline-danger me-2">Logout</button></a>
+    </div>
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    <div class="col-sm-8 col-sm-offset-2" style="margin-bottom: 30px; margin-top: 50px;">
+        <div class="row">
+            <div class="col-sm-20">
+                <div class="thumbnail" style="padding: 35px; border-radius: 15px; border: 3px solid rgba(22,17,236,0.85); box-shadow: 12px 12px 16px rgba(148,49,222,0.92);">
+
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+                        <h1 style="text-decoration: none; color: #1c30af; text-align: center; font-size: 32px; width: 85%">
+                            {{ story.headline }}
+                        </h1>
+
+                        <form action="/story/like_story/{{ story.id }}/">
+                            <button type="submit" style="margin-top: 5px; margin-right: 25px; height: 45px; width: 55px; overflow: hidden; display: inline-block; padding: 0; background: none; border: none; cursor: pointer;">
+                                {% if existence_in_liked_stories %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 16 16" fill="none">
+                                        <path d="M8 2.74805L8 13.7946C11.4523 11.4265 13.3654 9.25313 14.2857 7.43758C15.2413 5.55246 15.1235 4.07583 14.5996 3.05284C13.4859 0.877695 10.4011 0.280067 8.71675 2.01133L8 2.74805ZM8 15C-7.33313 4.86841 3.27876 -3.04087 7.82432 1.14308C7.88395 1.19797 7.94253 1.25493 8 1.314C8.05747 1.25494 8.11605 1.19797 8.17567 1.14309C12.7212 -3.04088 23.3331 4.8684 8 15Z" fill="black"/>
+                                    </svg>
+                                {% else %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 16 16" fill="none">
+                                        <path d="M8 2.74805L7.28325 2.01133C5.5989 0.280067 2.51415 0.877695 1.40036 3.05284C0.876534 4.07583 0.75875 5.55246 1.71429 7.43758C2.63457 9.25313 4.54767 11.4265 8 13.7946C11.4523 11.4265 13.3654 9.25313 14.2857 7.43758C15.2413 5.55246 15.1235 4.07583 14.5996 3.05284C13.4859 0.877695 10.4011 0.280067 8.71675 2.01133L8 2.74805ZM8 15C-7.33313 4.86841 3.27876 -3.04087 7.82432 1.14308C7.88395 1.19797 7.94253 1.25493 8 1.314C8.05747 1.25494 8.11605 1.19797 8.17567 1.14309C12.7212 -3.04088 23.3331 4.8684 8 15Z" fill="black"/>
+                                    </svg>
+                                {% endif %}
+                            </button>
+                        </form>
+
+                    </div>
+
+                    <p style="font-weight: 700; font-size: 22px; color: #5b80b2; letter-spacing: 25px; word-spacing: 30px; text-align: center; margin-bottom: 20px;">
+                        Useful for {{ story.for_who }}
+                    </p>
+
+                    <p style="font-size: 24px; margin-bottom: 25px; color: #377fe7">
+                        {{ story.title }}
+                    </p>
+
+                    <p style="font-size: 20px; word-spacing: 3px; margin-bottom: 20px;">
+                        {{ story.text }}
+                    </p>
+
+                    <hr style="height: 1px;">
+
+                    <div class="d-flex justify-content-between align-items-center" style="margin-top: 10px;">
+                        <p style="font-size: 24px; font-weight: 500; color: #154a98">{{ user_main.first_name }} {{ user_main.last_name }}</p>
+                        {% if user_visitor.is_superuser or story.user == user_visitor %}
+                            <a style="margin-right: 100px;" href="{% url 'story:story-delete' story.id %}"><button class="btn btn-outline-danger" id="delete" style="font-size: 15px; font-weight: 700; width: 100px; border-radius: 10px; border: 3px solid #d20f3e;">Delete</button></a>
+                        {% endif %}
+                        <small class="text-body-secondary">{{ story.timestamp|timesince }} тому</small>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% if comments %}
+
+        <form style="margin-left: 28%; margin-bottom: 90px;" action="{% url 'story:story-content' story.id %}" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <div style="display: flex;">
+                <textarea class="form-control" placeholder="Write comment" maxlength="300" style="border-radius: 10px; width: 500px; height: 40px; color: #106e8a; border: 3px solid rgba(22,17,236,0.85); box-shadow: 5px 5px 14px rgba(148,49,222,0.92); font-size: 18px; padding: 5px;" name="text" rows="3" cols="3"></textarea>
+                <input type="submit" class="btn btn-primary" value="Comment" style="margin-left: 10px; font-size: 20px; padding-top: 0; font-weight: 500; width: 12%; height: 40px; border-radius: 10px; border: 2px solid #858DF5; box-shadow: 10px 10px 10px #858DF5;">
+            </div>
+        </form>
+
+    {% endif %}
+
+    {% if all_comments %}
+
+        <div style="margin-bottom: 50px; margin-left: 20%;">
+            {% for comment_content in all_comments %}
+                <div style="margin-bottom: 30px;">
+
+                    <p style="margin-bottom: 10px;">
+                        <span style="color: rgba(112,21,178,0.92); margin-right: 20px; font-size: 18px;">{% if author_equal_user %}author{% endif %}</span><br>
+                        <strong style="font-size: 22px; margin-right: 20px; color: #154a98">{{ comment_content.user.first_name }} {{ comment_content.user.last_name }}</strong>
+                        <small style="font-size: 17px;">{{ comment_content.timestamp|timesince }} тому</small>
+                        {% if user_visitor == user_main or user_visitor == comment_content.user %}
+                            <a style="margin-left: 20px;" href="{% url 'story:story-delete-comment' comment_content.id %}"><button class="btn btn-outline-danger" id="delete" style="font-size: 15px; font-weight: 700; width: 100px; border-radius: 10px; border: 3px solid #d20f3e;">Delete</button></a>
+                        {% endif %}
+                    </p>
+
+                    <p style="font-size: 18px; max-width: 900px; font-family: 'Roboto Light';">
+                        {{ comment_content.text }}
+                    </p>
+
+
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        {% if comments %}
+            <div style="margin-left: 35%; margin-bottom: 50px;">
+                <h2 style="font-size: 30px; color: #0a7a9b;">Be the first - write a comment</h2>
+            </div>
+        {% endif %}
+    {% endif %}
+
+{% endblock main_content %}

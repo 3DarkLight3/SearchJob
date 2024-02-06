@@ -1,0 +1,148 @@
+{% extends 'employee/base_employee_block.html' %}
+
+{% block add_in_nav %}
+
+    <ul class="nav col-12 col-md-6 me-lg-auto mb-2 justify-content-center mb-md-0" style="font-size: 25px;">
+        <li><a href="{% url 'employee:home-employee' %}" class="nav-link px-2 link-secondary">Home</a></li>
+        <li><a href="{% url 'employee:create' %}" class="nav-link px-2">Create</a></li>
+        <li><a href="{% url 'employee:resumes' %}" class="nav-link px-2">My resumes</a></li>
+        <li><a href="{% url 'employee:liked' %}" class="nav-link px-2">Liked</a></li>
+        <li><a href="{% url 'story:home-story' %}" class="nav-link px-2">Stories</a></li>
+    </ul>
+
+    {% include 'employee/login_in_nav.html' %}
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    <div class="col-sm-8 col-sm-offset-2" style="margin-bottom: 30px; margin-top: 50px;">
+        <div class="row">
+            <div class="col-sm-20">
+                <div class="thumbnail" style="padding: 30px; border-radius: 10px; border: 3px solid rgba(178,178,178,0.79); box-shadow: 10px 10px 14px rgba(159,159,159,0.57);">
+
+                    <div style="display: flex; justify-content: space-between;">
+                        <h3 class="name" style="font-size: 50px; text-align: left;"><a style="text-decoration: none" href="{% url 'employee:home-employee' %}">{{ vacancy.name_of_job }}</a></h3>
+
+
+                        {% if user.is_authenticated %}
+                            <form action="/employee/like_vacancy/{{ vacancy.id }}/">
+                                <button type="submit" style="margin-top: 15px; margin-right: 10px; height: 45px; width: 55px; overflow: hidden; display: inline-block; padding: 0; background: none; border: none; cursor: pointer;">
+                                    {% if existence_in_liked_vacancies %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 16 16" fill="none">
+                                            <path d="M8 2.74805L8 13.7946C11.4523 11.4265 13.3654 9.25313 14.2857 7.43758C15.2413 5.55246 15.1235 4.07583 14.5996 3.05284C13.4859 0.877695 10.4011 0.280067 8.71675 2.01133L8 2.74805ZM8 15C-7.33313 4.86841 3.27876 -3.04087 7.82432 1.14308C7.88395 1.19797 7.94253 1.25493 8 1.314C8.05747 1.25494 8.11605 1.19797 8.17567 1.14309C12.7212 -3.04088 23.3331 4.8684 8 15Z" fill="black"/>
+                                        </svg>
+                                    {% else %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 16 16" fill="none">
+                                            <path d="M8 2.74805L7.28325 2.01133C5.5989 0.280067 2.51415 0.877695 1.40036 3.05284C0.876534 4.07583 0.75875 5.55246 1.71429 7.43758C2.63457 9.25313 4.54767 11.4265 8 13.7946C11.4523 11.4265 13.3654 9.25313 14.2857 7.43758C15.2413 5.55246 15.1235 4.07583 14.5996 3.05284C13.4859 0.877695 10.4011 0.280067 8.71675 2.01133L8 2.74805ZM8 15C-7.33313 4.86841 3.27876 -3.04087 7.82432 1.14308C7.88395 1.19797 7.94253 1.25493 8 1.314C8.05747 1.25494 8.11605 1.19797 8.17567 1.14309C12.7212 -3.04088 23.3331 4.8684 8 15Z" fill="black"/>
+                                        </svg>
+                                    {% endif %}
+                                </button>
+                            </form>
+                        {% endif %}
+
+
+                    </div>
+
+
+                    <p class="salary" style="color: #35359b; font-size: 30px; font-weight: bolder; padding-top: 10px;">
+                                {{ vacancy.lower_salary }}
+                                 -
+                                {{ vacancy.higher_salary }} $
+                            </p>
+
+                    <p class="company" style="font-size: 30px; padding-bottom: 10px; color: rgba(0,0,0,0.87); font-weight: 500">
+                        <span class="company-name">
+                            {{ vacancy.name_of_company }}
+                        </span>
+                    </p>
+
+                    <hr>
+
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 5px; margin-right: 5px; margin-bottom: 10px;" width="15" height="20" viewBox="0 0 10 16" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5 1C3.34315 1 2 2.34315 2 4C2 5.65685 3.34315 7 5 7C6.65685 7 8 5.65685 8 4C8 2.34315 6.65685 1 5 1ZM1 4C1 1.79086 2.79086 0 5 0C7.20914 0 9 1.79086 9 4C9 6.03981 7.47316 7.723 5.5 7.96905V13.5C5.5 13.7761 5.27614 14 5 14C4.72386 14 4.5 13.7761 4.5 13.5V7.96905C2.52684 7.723 1 6.03981 1 4ZM3.49328 12.5742C3.53841 12.8467 3.35414 13.1041 3.08171 13.1492C2.37026 13.2671 1.80258 13.4439 1.42743 13.6415C1.23962 13.7405 1.1222 13.8332 1.05719 13.9069C1.02598 13.9422 1.01158 13.9679 1.00527 13.9824C1.00219 13.9895 1.00098 13.9941 1.00049 13.9963C1.00003 13.9984 1 14 1 14C1 14 0.999951 14.0025 1.00153 14.0077C1.00322 14.0132 1.00741 14.0243 1.01754 14.0407C1.03876 14.0753 1.08204 14.1273 1.16312 14.1912C1.32821 14.3213 1.59808 14.4603 1.97613 14.5863C2.72701 14.8366 3.79615 15 5 15C6.20386 15 7.27299 14.8366 8.02387 14.5863C8.40192 14.4603 8.67179 14.3213 8.83688 14.1912C8.91796 14.1273 8.96124 14.0753 8.98246 14.0407C8.99259 14.0243 8.99677 14.0132 8.99847 14.0077C9.00001 14.0026 9 14.0001 9 14.0001C9 14.0001 8.99997 13.9984 8.99951 13.9963C8.99902 13.9941 8.99781 13.9895 8.99473 13.9824C8.98842 13.9679 8.97402 13.9422 8.94281 13.9069C8.8778 13.8332 8.76038 13.7405 8.57257 13.6415C8.19742 13.4439 7.62974 13.2671 6.91829 13.1492C6.64586 13.1041 6.46159 12.8467 6.50672 12.5742C6.55185 12.3018 6.80928 12.1175 7.08171 12.1627C7.85198 12.2903 8.5343 12.491 9.03872 12.7568C9.50088 13.0003 10 13.4014 10 14C10 14.426 9.74055 14.7522 9.45585 14.9766C9.16552 15.2054 8.77638 15.3896 8.34009 15.535C7.46229 15.8276 6.28143 16 5 16C3.71857 16 2.53771 15.8276 1.65991 15.535C1.22362 15.3896 0.834481 15.2054 0.544145 14.9766C0.259446 14.7522 0 14.426 0 14C0 13.4014 0.499119 13.0003 0.961283 12.7568C1.4657 12.491 2.14802 12.2903 2.91829 12.1627C3.19072 12.1175 3.44815 12.3018 3.49328 12.5742Z" fill="black"/>
+                        </svg>
+                        <span style="font-size: 24px; color: rgba(0,0,0,0.74);">{{ vacancy.location }}</span>
+                    </div>
+
+                    <p style="font-size: 25px; color: #7f8b99;">
+                        {{ vacancy.time_work }}. Work experience from {{ vacancy.min_experience }} years.<br>Required English - {{ vacancy.required_english }}.
+                    </p>
+
+                    <div style="margin-bottom: 15px;">
+                        {% if vacancy.remote_job %}
+                            <span style="font-size: 25px; padding: 4px 10px; border: 2px rgba(234,234,234,0.93); border-radius: 10px; color: rgba(23,23,23,0.73); background-color: rgba(234,234,234,0.93)">Remote work</span>
+                        {% endif %}
+                    </div>
+
+                    <hr>
+
+                    <p style="font-size: 30px; font-weight: 600">Job description</p>
+                    <p style="font-size: 21px;">
+                        Thank you for visiting this job posting.<br>
+                        We are excited to share this opportunity and invite you to join our team.
+                    </p>
+
+                    <p style="font-size: 25px; font-weight: 600; margin-top: 20px; color: rgba(2,2,2,0.71)">
+                        Position - {{ vacancy.type_of_job }}<br>
+
+                        {% if vacancy.main_programming_language != 'N/A' %}
+                            Main programming language - {{ vacancy.main_programming_language }}
+                        {% endif %}
+                    </p>
+
+                    <div style="margin-top: 20px;">
+                        <p style="font-size: 30px; font-weight: 600">Requirements:</p>
+
+                        {% for requirement in requirements %}
+                            <p style="color: rgba(47,47,47,0.8); font-weight: 400; font-size: 22px;">- {{ requirement }}</p>
+                        {% endfor %}
+
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <p style="font-size: 30px; font-weight: 600">Work conditions:</p>
+
+                        {% for benefit in benefits %}
+                            <p style="color: rgba(47,47,47,0.8); font-weight: 400; font-size: 22px;">- {{ benefit }}</p>
+                        {% endfor %}
+
+                    </div>
+
+                    <div style="margin-top: 20px; margin-bottom: 30px;">
+                        <p style="font-size: 30px; font-weight: 600">Responsibilities:</p>
+
+                        {% for resposibility in responsibilities %}
+                            <p style="color: rgba(47,47,47,0.8); font-weight: 400; font-size: 22px;">- {{ resposibility }}</p>
+                        {% endfor %}
+
+                    </div>
+                
+                    <a style="text-decoration: none;" href="{% url 'employee:respond' vacancy.id %}"><button class="btn btn-outline-primary" style="margin-bottom: 20px; font-weight: 600; width: 100%; font-size: 25px; padding-bottom: 5px; border-radius: 10px; border: 3px solid rgb(64,108,206); box-shadow: 10px 10px 14px rgba(99,103,192,0.6);">Respond</button></a>
+
+                    <hr>
+
+                    <div style="margin-top: 20px; font-size: 25px; margin-bottom: 20px;">
+
+                        {% if vacancy.link_to_own_website %}
+                            <a target="_blank" style="text-decoration: none; color: cornflowerblue; margin-right: 50%; margin-left: 15%" href="{{ vacancy.link_to_own_website }}">Website</a>
+                        {% endif %}
+
+                        {% if vacancy.linkedin %}
+                            <a target="_blank" style="text-decoration: none; color: cornflowerblue" href="{{ vacancy.linkedin}}">LinkedIn</a>
+                        {% endif %}
+
+                    </div>
+
+                    <hr>
+
+                    <p style="font-size: 19px; font-weight: 400; color: #888888">The vacancy has been published {{ vacancy.timestamp|timesince }} тому</p>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock main_content %}

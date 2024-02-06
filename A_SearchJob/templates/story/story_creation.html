@@ -1,0 +1,82 @@
+{% extends 'story/base_story_block.html' %}
+
+{% block add_in_nav %}
+
+    <div class="text-end" style="margin-right: 10px; margin-top: 10px;">
+        <a href="{% if user_side == 'employee' %}{% url 'employer:home-employer' %}{% else %}{% url 'employee:home-employee' %}{% endif %}"><button style="font-size: 20px; border-radius: 10px;" type="button" class="btn btn-outline-primary me-2">{% if user_side == 'employee' %}Employer{% else %}Employee{% endif %}</button></a>
+        <a href="{% url 'users:logout' %}"><button style="font-size: 20px; border-radius: 10px;" type="button" class="btn btn-outline-danger me-2">Logout</button></a>
+    </div>
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    <div class="col-sm-6 col-sm-offset-3" style="margin-bottom: 10px; margin-top: 50px;">
+        <div class="row">
+            <div class="col-sm-20">
+                <div class="thumbnail" style="box-shadow: 6px 6px 14px #ffcc6c; border-radius: 10px; border: 3px solid #ffcc6c;">
+                    <div class="caption" style="padding: 25px;">
+
+                        <h2 style="text-align: center; font-size: 35px; margin-bottom: 25px; font-weight: 500; color: #14d942">Your story</h2>
+                        <hr style="color: #0d6efc; height: 2px;">
+
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <table style="margin-left: 25px; margin-right: 25px; margin-bottom: 30px;">
+                                <tr>
+                                    <td>
+                                        <div class="headline-input" style="margin-top: 30px;">
+                                            <label style="margin-left: 7%; color: #0d6efc; font-size: 18px; margin-bottom: 5px;" for="id_headline">Headline</label>
+                                            <input class="form-control" style="height: 40px; color: #0d6efc; border: 3px solid #62d91b; border-radius: 10px; box-shadow: 5px 5px 14px #24e159;
+                                             font-size: 18px; padding: 15px; margin-bottom: 30px;" type="text" name="headline" maxlength="200" required="" value="{{ headline }}" id="id_headline">
+                                        </div>
+                                    </td>
+                                    <td rowspan="4">
+                                        <div class="text-input" style="margin-left: 50px; margin-bottom: 30px; margin-top: 30px;">
+                                            <label style="margin-left: 7%; color: #0d6efc; font-size: 20px; margin-bottom: 5px;" for="id_text">Content</label>
+                                            <textarea class="form-control" style="border-radius: 10px; color: #0d6efc; border: 3px solid #62d91b; box-shadow: 5px 5px 14px #24e159; font-size: 16px; padding: 15px;" id="id_text" name="text" rows="12" cols="50">{{ text }}</textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="title-input">
+                                            <label style="margin-left: 7%; color: #0d6efc; font-size: 18px; margin-bottom: 5px;" for="id_title">Title</label>
+                                            <textarea class="form-control" style="color: #0d6efc; border: 3px solid #62d91b; border-radius: 10px; box-shadow: 5px 5px 14px #24e159; margin-bottom: 30px; font-size: 18px; padding: 15px;" id="id_title" name="title" rows="3" cols="20">{{ title }}</textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="for_who_input">
+                                            <label style="margin-left: 4%; color: #0d6efc; font-size: 18px; margin-bottom: 5px; margin-right: 15px;" for="id_for_who">For </label>
+
+                                            <select name="for_who" id="id_for_who" style="margin-bottom: 25px; font-weight: 500; font-size: 18px; padding: 5px; height: 40px; border: 3px solid #62d91b; border-radius: 10px; color: #0d6efc">
+                                                <option value="employers">employers</option>
+                                                <option value="employees">employees</option>
+                                                <option value="everyone" selected="">everyone</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="comments_input">
+                                            <label style="margin-left: 4%; color: #0d6efc; margin-right: 20px; font-size: 18px; margin-bottom: 5px;" for="id_comments">Comments</label>
+                                            <input type="checkbox" style="width: 18px; height: 18px; margin-top: 5px; color: #62d91b" name="comments" id="id_comments" {% if comments %}checked{% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <input type="submit" class="btn btn-primary" value="{{ text_for_btn }}" style="font-size: 30px; padding-top: 0; font-weight: 500; width: 100%; height: 50px; border-radius: 10px; border: 2px solid #858DF5; box-shadow: 10px 10px 10px #858DF5;">
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock main_content %}

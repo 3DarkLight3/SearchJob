@@ -1,0 +1,155 @@
+{% extends 'employer/base_employer_block.html' %}
+
+{% block add_in_nav %}
+
+    <ul class="nav col-12 col-md-6 me-lg-auto mb-2 justify-content-center mb-md-0" style="font-size: 25px;">
+        <li><a href="{% url 'employer:home-employer' %}" class="nav-link px-2 link-secondary">Home</a></li>
+        <li><a href="{% url 'employer:create' %}" class="nav-link px-2">Create</a></li>
+        <li><a href="{% url 'employer:vacancies' %}" class="nav-link px-2">My vacancies</a></li>
+        <li><a href="{% url 'employer:liked' %}" class="nav-link px-2">Liked</a></li>
+        <li><a href="{% url 'story:home-story' %}" class="nav-link px-2">Stories</a></li>
+    </ul>
+
+
+    {% include 'employee/login_in_nav.html' %}
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    <div class="col-sm-8 col-sm-offset-2" style="margin-bottom: 30px; margin-top: 50px;">
+        <div class="row">
+            <div class="col-sm-20">
+                <div class="thumbnail" style="padding: 0; border-radius: 10px; border: 3px solid rgba(178,178,178,0.79); box-shadow: 10px 10px 14px rgba(159,159,159,0.57); display: flex;">
+                    <div style="flex: 29%; text-align: center; background-color: aqua; padding: 20px;">
+                        {% if image_existence %}
+                            <img style="border-radius: 50px; margin-bottom: 20px;" src="{{ resume.image.url }}" width="{{ image_width }}px" height="{{ image_height }}px" alt="Photo of person">
+                        {% endif %}
+
+                        <div style="text-align: left;">
+                            <h2>Personal information</h2>
+                            <hr style="height: 2px; margin-bottom: 20px;">
+                            <div>
+                                <h4>Name</h4>
+                                <p>{{ resume.name }}</p>
+                            </div>
+                            <div>
+                                <h4>Date of birth</h4>
+                                <p>{{ resume.birth }}</p>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <h4>Address</h4>
+                                <p>{{ resume.address }}</p>
+                            </div>
+
+                            <h2>Additional Information</h2>
+                            <hr style="height: 2px; margin-bottom: 20px;">
+                            <div>
+                                <h4>English level</h4>
+                                <p>{{ resume.level_of_english }}</p>
+                            </div>
+                            <div>
+                                <h4>Main programming language</h4>
+                                <p>{{ resume.main_programming_language }}</p>
+                            </div>
+
+                            <h2>Hard skills</h2>
+                            <hr style="height: 2px; margin-bottom: 20px;">
+                            <ul style="margin-bottom: 20px;">
+                                {% for skills in hard_skills %}
+                                    <li>{{ skills }}</li>
+                                {% endfor %}
+                            </ul>
+
+                            <a style="text-decoration: none;" href="{% url 'employer:respond' resume.id %}"><button class="btn btn-outline-primary" style="margin-top: 10px; margin-right: 20px; font-weight: 600; width: 100%; font-size: 25px; padding-bottom: 5px; border-radius: 10px; border: 3px solid rgb(64,108,206); box-shadow: 10px 10px 14px rgba(99,103,192,0.6);">Respond</button></a>
+
+                        </div>
+
+                    </div>
+
+                    <div style="background-color: rgba(178,178,178,0.79); flex: 1px;"></div>
+
+                    <div style="flex: 70%; text-align: left; padding: 10px 20px;">
+
+                        <div style="display: flex; justify-content: space-between;">
+
+                            <h1 style="font-size: 35px; margin-top: 10px;">{{ resume.name }}</h1>
+
+                            {% if user.is_authenticated %}
+                                <form action="/employer/like_resume/{{ resume.id }}/">
+                                    <button type="submit" style="margin-top: 15px; margin-right: 10px; height: 45px; width: 55px; overflow: hidden; display: inline-block; padding: 0; background: none; border: none; cursor: pointer;">
+                                        {% if existence_in_liked_resumes %}
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 16 16" fill="none">
+                                                <path d="M8 2.74805L8 13.7946C11.4523 11.4265 13.3654 9.25313 14.2857 7.43758C15.2413 5.55246 15.1235 4.07583 14.5996 3.05284C13.4859 0.877695 10.4011 0.280067 8.71675 2.01133L8 2.74805ZM8 15C-7.33313 4.86841 3.27876 -3.04087 7.82432 1.14308C7.88395 1.19797 7.94253 1.25493 8 1.314C8.05747 1.25494 8.11605 1.19797 8.17567 1.14309C12.7212 -3.04088 23.3331 4.8684 8 15Z" fill="black"/>
+                                            </svg>
+                                        {% else %}
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 16 16" fill="none">
+                                                <path d="M8 2.74805L7.28325 2.01133C5.5989 0.280067 2.51415 0.877695 1.40036 3.05284C0.876534 4.07583 0.75875 5.55246 1.71429 7.43758C2.63457 9.25313 4.54767 11.4265 8 13.7946C11.4523 11.4265 13.3654 9.25313 14.2857 7.43758C15.2413 5.55246 15.1235 4.07583 14.5996 3.05284C13.4859 0.877695 10.4011 0.280067 8.71675 2.01133L8 2.74805ZM8 15C-7.33313 4.86841 3.27876 -3.04087 7.82432 1.14308C7.88395 1.19797 7.94253 1.25493 8 1.314C8.05747 1.25494 8.11605 1.19797 8.17567 1.14309C12.7212 -3.04088 23.3331 4.8684 8 15Z" fill="black"/>
+                                            </svg>
+                                        {% endif %}
+                                    </button>
+                                </form>
+                            {% endif %}
+
+                        </div>
+
+
+                        <hr style="height: 2px;">
+                        <p style="font-weight: 500; margin-bottom: 30px;">{{ resume.description_about_yourself }}</p>
+
+                        <h2 style="margin-bottom: 10px;">Work experience</h2>
+                        <hr style="height: 2px;">
+                        <p style="margin-bottom: 20px;">{{ resume.work_experience }}</p>
+
+                        <h2 style="margin-bottom: 10px;">Education and qualification</h2>
+                        <hr style="height: 2px;">
+                        <p style="margin-bottom: 20px;">{{ resume.education }}</p>
+
+                        <h2 style="margin-bottom: 10px;">Type of work</h2>
+                        <hr style="height: 2px;">
+                        <p>{{ resume.type_of_job }}</p>
+                        <p style="margin-bottom: 20px;">Desired salary: {{ resume.desired_salary }}$ per month</p>
+
+                        <h2 style="margin-bottom: 10px;">Soft skills</h2>
+                        <hr style="height: 2px;">
+                        <ul style="margin-bottom: 20px;">
+                            {% for skill in soft_skills %}
+                                <li>{{ skill }}</li>
+                            {% endfor %}
+                        </ul>
+
+                        <h2 style="margin-bottom: 10px;">Links to the author</h2>
+                        <hr style="height: 2px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            {% if resume.link_to_own_website %}
+                                <a href="{{ resume.link_to_own_website }}" target="_blank" style="text-decoration: none; color: #5295e5; font-weight: 500; font-size: 15px; margin-left: 25px;">Own site</a>
+                            {% endif %}
+
+                            {% if resume.linkedin %}
+                                <a href="{{ resume.linkedin }}" target="_blank" style="text-decoration: none; color: #5295e5; font-weight: 500; font-size: 15px;">LinkedIn</a>
+                            {% endif %}
+
+                            {% if resume.github %}
+                                <a href="{{ resume.github }}" target="_blank" style="text-decoration: none; color: #5295e5; font-weight: 500; font-size: 15px; margin-right: 25px;">GitHub</a>
+                            {% endif %}
+                        </div>
+
+                        {% if resume.additional_files %}
+                            <h2 style="margin-bottom: 10px;">Additional file</h2>
+                            <hr style="height: 2px;">
+                            <a target="_blank" href="{{ resume.additional_files.url }}" style="text-decoration: none; color: #5295e5; font-weight: 500; font-size: 15px; margin-left: 25px; margin-bottom: 20px;">File</a>
+                        {% endif %}
+
+                        <hr style="height: 2px">
+                        <p style="display: flex; justify-content: space-between; font-size: 15px; margin-right: 15px; text-align: right; font-weight: 200">
+                            {{ resume.timestamp|timesince }} тому
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock main_content %}

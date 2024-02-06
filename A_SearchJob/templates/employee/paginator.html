@@ -1,0 +1,20 @@
+
+<ul class="pagination">
+    <li class="{% if vacancies.has_previous %} page-item {% else %} page-item disabled {% endif %}">
+        <a class="page-link" {% if vacancies.has_previous %} href="?{{ page_request_var }}={{ vacancies.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" {% endif %}>
+            <span style="font-size: 25px;">Previous</span>
+        </a>
+    </li>
+
+
+    {% for page in paginator_range %}
+        <li class="page-item{% if page == '...' %} disabled {% endif %}" style="font-size: 25px;"><a class="page-link" style="{% if vacancies.number == page %}background-color: cornflowerblue; color: white{% endif %}" href="?{{ page_request_var }}={{ page }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ page }}</a></li>
+    {% endfor %}
+
+
+    <li class="{% if vacancies.has_next %} page-item {% else %} page-item disabled {% endif %}">
+        <a class="page-link" {% if vacancies.has_next %} href="?{{ page_request_var }}={{ vacancies.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" {% endif %}>
+            <span style="font-size: 25px;">Next</span>
+        </a>
+    </li>
+</ul>

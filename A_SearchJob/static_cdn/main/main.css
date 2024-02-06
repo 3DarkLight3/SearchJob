@@ -1,0 +1,36 @@
+#btn-logout, #btn-login, #btn-register {
+    margin-left: 35%;
+    font-size: 40px;
+    cursor: pointer;
+    border-radius: 15px;
+    box-shadow: 10px 10px 14px #888;
+}
+
+#btn-logout {
+    padding: 20px 160px;
+}
+
+#btn-login {
+    padding: 20px 171px;
+    margin-top: 15%;
+    margin-bottom: 5%;
+}
+
+#btn-register {
+    padding: 20px 150px;
+}
+
+#btn-e, #btn-r {
+    margin-top: 15%;
+    padding: 15px 120px;
+    cursor: pointer;
+    border-radius: 15px;
+    box-shadow: 10px 10px 14px #888;
+    font-size: 40px;
+    margin-bottom: 6%;
+}
+
+#btn-e {
+    margin-left: 19%;
+    margin-right: 6%;
+}

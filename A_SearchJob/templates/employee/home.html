@@ -1,0 +1,98 @@
+{% extends 'employee/base_employee_block.html' %}
+
+{% block add_in_nav %}
+
+    <ul class="nav col-12 col-md-6 me-lg-auto mb-2 justify-content-center mb-md-0" style="font-size: 25px;">
+        <li><a href="{% url 'employee:home-employee' %}" class="nav-link px-2 link-secondary">Home</a></li>
+        <li><a href="{% if user.is_authenticated %}{% url 'employee:create' %}{% else %}{% url 'users:login' %}{% endif %}" class="nav-link px-2">Create</a></li>
+        <li><a href="{% if user.is_authenticated %}{% url 'employee:resumes' %}{% else %}{% url 'users:login' %}{% endif %}" class="nav-link px-2">My resumes</a></li>
+        <li><a href="{% if user.is_authenticated %}{% url 'employee:liked' %}{% else %}{% url 'users:login' %}{% endif %}" class="nav-link px-2">Liked</a></li>
+        <li><a href="{% if user.is_authenticated %}{% url 'story:home-story' %}{% else %}{% url 'users:login' %}{% endif %}" class="nav-link px-2">Stories</a></li>
+    </ul>
+
+    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" style="display: flex;" action="" method="GET">
+        <input type="text" style="margin-right: 7px; height: 40px; font-size: 20px; margin-top: 8px; border-radius: 10px;" name="q" class="form-control" placeholder="Search job..." aria-label="Search" value="{{ request.GET.q }}">
+        <input type="submit" style="font-size: 20px; margin-top: 8px; border-radius: 10px;" value="Search" class="btn btn-outline-primary me-2">
+    </form>
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    <div class="col-sm-8 col-sm-offset-2" style="margin-top: 50px;">
+
+        {% for vacancy in vacancies %}
+            <div class="row">
+                <div class="col-sm-20" style="margin-bottom: 20px;">
+                    <div class="thumbnail" style="border-radius: 10px; border: 3px solid rgba(178,178,178,0.79); box-shadow: 10px 10px 14px rgba(159,159,159,0.57);">
+                        <div class="caption" style="padding: 30px;">
+
+                            <h3 class="name" style="font-size: 38px; text-align: left;"><a style="text-decoration: none" href="{{ vacancy.get_url_to_vacancy }}">{{ vacancy.name_of_job }}</a></h3>
+                            <p class="salary" style="color: #35359b; font-size: 28px; font-weight: bolder; padding-top: 15px;">
+                                {{ vacancy.lower_salary }}
+                                 -
+                                {{ vacancy.higher_salary }} $
+                            </p>
+
+                            <p style="font-size: 25px; color: #7f8b99;">
+                                {{ vacancy.time_work }}. Work experience from {{ vacancy.min_experience }} years
+
+                            </p>
+
+                            <p class="description" style="font-size: 22px; font-weight: 600; color: rgba(77,77,77,0.65); padding-top: 15px; padding-bottom: 10px;">
+                                {{ vacancy.benefits_of_job }}
+                            </p>
+
+                            <div style="margin-bottom: 15px;">
+                                {% if vacancy.remote_job %}
+                                    <span style="font-size: 25px; padding: 4px 7px; border: 2px rgba(234,234,234,0.93); border-radius: 10px; color: rgba(23,23,23,0.73); background-color: rgba(234,234,234,0.93)">Remote work</span>
+                                {% endif %}
+                            </div>
+
+                            <p class="company" style="font-size: 30px; padding-bottom: 10px; color: rgba(0,0,0,0.87); font-weight: 500">
+                                <span class="company-name">
+                                    {{ vacancy.name_of_company }}
+                                </span>
+                            </p>
+
+                            <div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 5px; margin-right: 2px; margin-bottom: 10px;" width="15" height="20" viewBox="0 0 10 16" fill="none">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5 1C3.34315 1 2 2.34315 2 4C2 5.65685 3.34315 7 5 7C6.65685 7 8 5.65685 8 4C8 2.34315 6.65685 1 5 1ZM1 4C1 1.79086 2.79086 0 5 0C7.20914 0 9 1.79086 9 4C9 6.03981 7.47316 7.723 5.5 7.96905V13.5C5.5 13.7761 5.27614 14 5 14C4.72386 14 4.5 13.7761 4.5 13.5V7.96905C2.52684 7.723 1 6.03981 1 4ZM3.49328 12.5742C3.53841 12.8467 3.35414 13.1041 3.08171 13.1492C2.37026 13.2671 1.80258 13.4439 1.42743 13.6415C1.23962 13.7405 1.1222 13.8332 1.05719 13.9069C1.02598 13.9422 1.01158 13.9679 1.00527 13.9824C1.00219 13.9895 1.00098 13.9941 1.00049 13.9963C1.00003 13.9984 1 14 1 14C1 14 0.999951 14.0025 1.00153 14.0077C1.00322 14.0132 1.00741 14.0243 1.01754 14.0407C1.03876 14.0753 1.08204 14.1273 1.16312 14.1912C1.32821 14.3213 1.59808 14.4603 1.97613 14.5863C2.72701 14.8366 3.79615 15 5 15C6.20386 15 7.27299 14.8366 8.02387 14.5863C8.40192 14.4603 8.67179 14.3213 8.83688 14.1912C8.91796 14.1273 8.96124 14.0753 8.98246 14.0407C8.99259 14.0243 8.99677 14.0132 8.99847 14.0077C9.00001 14.0026 9 14.0001 9 14.0001C9 14.0001 8.99997 13.9984 8.99951 13.9963C8.99902 13.9941 8.99781 13.9895 8.99473 13.9824C8.98842 13.9679 8.97402 13.9422 8.94281 13.9069C8.8778 13.8332 8.76038 13.7405 8.57257 13.6415C8.19742 13.4439 7.62974 13.2671 6.91829 13.1492C6.64586 13.1041 6.46159 12.8467 6.50672 12.5742C6.55185 12.3018 6.80928 12.1175 7.08171 12.1627C7.85198 12.2903 8.5343 12.491 9.03872 12.7568C9.50088 13.0003 10 13.4014 10 14C10 14.426 9.74055 14.7522 9.45585 14.9766C9.16552 15.2054 8.77638 15.3896 8.34009 15.535C7.46229 15.8276 6.28143 16 5 16C3.71857 16 2.53771 15.8276 1.65991 15.535C1.22362 15.3896 0.834481 15.2054 0.544145 14.9766C0.259446 14.7522 0 14.426 0 14C0 13.4014 0.499119 13.0003 0.961283 12.7568C1.4657 12.491 2.14802 12.2903 2.91829 12.1627C3.19072 12.1175 3.44815 12.3018 3.49328 12.5742Z" fill="black"/>
+                                    </svg>
+                                    <span style="font-size: 22px; color: rgba(0,0,0,0.74);">{{ vacancy.location }}</span>
+                                </div>
+
+                                <div style="margin-top: 10px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 7px; margin-left: 3px; margin-right: 4px;" width="17" height="17" viewBox="0 0 16 16" fill="none">
+                                        <path d="M8 3.5C8 3.22386 7.77614 3 7.5 3C7.22386 3 7 3.22386 7 3.5V9C7 9.17943 7.09614 9.3451 7.25193 9.43412L10.7519 11.4341C10.9917 11.5711 11.2971 11.4878 11.4341 11.2481C11.5711 11.0083 11.4878 10.7029 11.2481 10.5659L8 8.70984V3.5Z" fill="black"/>
+                                        <path d="M8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16ZM15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1C11.866 1 15 4.13401 15 8Z" fill="black"/>
+                                    </svg>
+                                    <span style="font-size: 20px; font-weight: 500; color: rgba(80,80,80,0.73)">{{ vacancy.timestamp|timesince }} тому</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+
+    {% if count_of_pages > 1 %}
+        <div class="col-sm-8 col-sm-offset-4" style="padding-left: 85px;">
+            {% include 'employee/paginator.html' %}
+        </div>
+    {% endif %}
+
+
+    {% if not count_of_vacancies %}
+        <div class="col-sm-6 col-sm-offset-3" style="margin-bottom: 250px;">
+            <p style="font-size: 35px;"><b>Nothing was found for your request "{{ request.GET.q }}"</b></p>
+            <p style="font-size: 30px;">Try changing the query</p>
+        </div>
+    {% endif %}
+
+{% endblock main_content %}

@@ -1,0 +1,58 @@
+{% extends 'story/base_story_block.html' %}
+
+{% block add_in_nav %}
+    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" style="display: flex;" action="" method="GET">
+        <input type="text" style="margin-right: 7px; height: 40px; font-size: 20px; margin-top: 8px; border-radius: 10px;" name="q_liked_s" class="form-control" placeholder="Search story..." aria-label="Search" value="{{ request.GET.q_liked_s }}">
+        <input type="submit" style="font-size: 20px; margin-top: 8px; border-radius: 10px;" value="Search" class="btn btn-outline-primary me-2">
+    </form>
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    {% if not count_of_stories %}
+        {% if not add_query %}
+            <div style="margin-left: 31%; margin-top: 5%;">
+                <h1 style="font-size: 35px;">You have not liked any story yet.</h1>
+            </div>
+        {% else %}
+            <div class="col-sm-6 col-sm-offset-3" style="margin-top: 100px;">
+                <p style="font-size: 35px;"><b>Nothing was found for your request "{{ request.GET.q_liked_s }}"</b></p>
+                <p style="font-size: 30px;">Try changing the query</p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+
+    <div class="col-sm-8 col-sm-offset-2" style="margin-top: 50px; margin-bottom: 20px;">
+        {% for story in stories %}
+            <div class="row">
+                <div class="col-sm-20" style="margin-bottom: 20px;">
+                    <div class="thumbnail" style="border-radius: 10px; border: 3px solid rgba(130,196,15,0.85); box-shadow: 8px 8px 14px rgba(188,211,68,0.92);">
+                        <div class="caption" style="padding: 25px;">
+
+                            <div style="margin-bottom: 20px; text-align: center;">
+                                <a href="{{ story.get_url_to_story }}" style="text-decoration: none; font-size: 30px; font-weight: 500; color: #fd9626">{{ story.headline }}</a>
+                            </div>
+
+                            <p style="font-size: 20px; margin-bottom: 20px; color: #256996; padding-left: 5%">
+                                {{ story.title }}
+                            </p>
+
+                            <p style="width: 100%; overflow: hidden; margin-top: 20px; font-weight: 400; font-size: 20px; margin-left: 20px; margin-bottom: 15px;">
+                                <span style="padding-left: 30px;">User: {{ story.user }}</span>
+                                <span style="margin-left: 45%;">Useful for {{ story.for_who }}</span>
+                            </p>
+                            <hr>
+                            <p style="display: flex; justify-content: space-between; font-size: 17px; margin-top: 15px; color: rgba(119,13,72,0.75)">
+                                <span>Latest update: {{ story.update|timesince }} тому</span>
+                                <span>Published: {{ story.timestamp|timesince }} тому</span>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock main_content %}

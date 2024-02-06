@@ -1,0 +1,201 @@
+{% extends 'employee/base_employee_block.html' %}
+{% load widget_tweaks %}
+
+{% block style %}
+    .form-control {
+        padding-bottom: 50px;
+    }
+{% endblock style %}
+
+{% block add_in_nav %}
+
+    <ul class="nav col-12 col-md-6 me-lg-auto mb-2 justify-content-center mb-md-0" style="font-size: 25px;">
+        <li><a href="{% url 'employee:home-employee' %}" class="nav-link px-2">Home</a></li>
+        <li><a href="{% url 'employee:create' %}" class="nav-link px-2 {% if type == 'create' %}link-secondary{% endif %}">Create</a></li>
+        <li><a href="{% url 'employee:resumes' %}" class="nav-link px-2 {% if type == 'update' %}link-secondary{% endif %}">My resumes</a></li>
+        <li><a href="{% url 'employee:liked' %}" class="nav-link px-2">Liked</a></li>
+        <li><a href="{% url 'story:home-story' %}" class="nav-link px-2">Stories</a></li>
+    </ul>
+
+    {% include 'employee/login_in_nav.html' %}
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    <div class="col-sm-6 col-sm-offset-3" style="margin-bottom: 10px; margin-top: 50px;">
+        <div class="row">
+            <div class="col-sm-20">
+                <div class="thumbnail" style="box-shadow: 6px 6px 14px #ffcc6c; border-radius: 10px; border: 3px solid #ffcc6c;">
+                    <div class="caption" style="padding: 25px;">
+
+                        <h2 style="text-align: center; font-size: 35px; margin-bottom: 25px; font-weight: 500; color: #0d6efc">Your resume</h2>
+                        <hr>
+
+                        <form action="" method="POST" enctype="multipart/form-data">
+
+                            {% csrf_token %}
+
+                            <h2 style="margin-top: 40px; margin-left: 2%; margin-bottom: 20px; text-decoration: none; color: #083d9a; font-size: 25px;">Personal information</h2>
+
+                            <div class="personal-info" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="input-name" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_name">Name</label>
+                                    {% render_field form.name class="form-control" id="id_name" style="width: 110%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="input-birth" style="display: inline-block; margin-right: 19%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_birth">Birth</label>
+                                    {% render_field form.birth class="form-control" id="id_birth" style="width: 153%; text-align: center; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+                            <div class="after-personal-info" style="margin-top: 40px; display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="input-address" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_address">Address</label>
+                                    {% render_field form.address class="form-control" id="id_address" style="width: 110%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="input-phone-number" style="display: inline-block; margin-right: 9%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_phone_number">Phone number</label>
+                                    {% render_field form.phone_number id="id_phone_number" class="form-control" style="width: 110%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+                            <div class="large-personal-info">
+                                <div class="description" style="margin-bottom: 20px;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_description_about_yourself">Description about yourself</label>
+                                    {% render_field form.description_about_yourself class="form-control" id="id_description_about_yourself" style="width: 90%; margin-left: 5%; height: 50px; font-size: 18px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;"%}
+                                </div>
+
+                                <div class="education" style="margin-bottom: 30px;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_education">Education</label>
+                                    {% render_field form.education class="form-control" id="id_education" style="width: 90%; margin-left: 5%; height: 50px; font-size: 18px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;"%}
+                                </div>
+                            </div>
+
+                            <hr>
+
+
+
+                            <h2 style="margin-top: 30px; margin-left: 2%; margin-bottom: 20px; text-decoration: none; color: #083d9a; font-size: 25px;">Main information</h2>
+
+                            <div class="first-group-main-info" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="english-level" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_main_programming_language">Language</label>
+                                    {% render_field form.main_programming_language class="form-control" id="id_main_programming_language" style="text-align: center; width: 237%; height: 40px; font-size: 18px; padding: 0; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="github-link" style="display: inline-block; margin-right: 20%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_level_of_english">Level of English</label>
+                                    {% render_field form.level_of_english class="form-control" id="id_level_of_english" style="width: 148%; height: 40px; font-size: 18px; padding: 0; text-align: center; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+                            <div class="second-group-main-info" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="english-level" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_type_of_job">Type of job</label>
+                                    {% render_field form.type_of_job class="form-control" id="id_type_of_job" style="text-align: center; width: 112%; height: 40px; font-size: 18px; padding: 0; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="github-link" style="display: inline-block; margin-right: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_desired_salary">Desired salary</label>
+                                    {% render_field form.desired_salary class="form-control" id="id_desired_salary" style="width: 100%; height: 40px; font-size: 18px; padding: 0; text-align: center; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+                            <div class="large-main-info">
+                                <div class="work-experience" style="margin-bottom: 20px;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_work_experience">Work experience</label>
+                                    {% render_field form.work_experience id="id_work_experience" class="form-control" style="width: 90%; margin-left: 5%; height: 50px; font-size: 18px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="hard-skills" style="margin-bottom: 20px;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_hard_skills">Hard skills</label>
+                                    {% render_field form.hard_skills class="form-control" id="id_hard_skills" style="width: 90%; margin-left: 5%; height: 50px; font-size: 18px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="soft-skills" style="margin-bottom:30px;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_soft_skills">Soft skills</label>
+                                    {% render_field form.soft_skills id="id_soft_skills" class="form-control" style="width: 90%; margin-left: 5%; height: 50px; font-size: 18px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+                            </div>
+
+                            <hr>
+
+
+
+                            <h2 style="margin-top: 30px; margin-left: 2%; margin-bottom: 20px; text-decoration: none; color: #083d9a; font-size: 25px;">Links</h2>
+
+                            <div class="first-group-links" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="own-website-link" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_link_to_own_website">Own website</label>
+                                    {% render_field form.link_to_own_website id="id_link_to_own_website" class="form-control" style="width: 130%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="linkedin-link" style="display: inline-block; margin-right: 2%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_linkedin">LinkedIn</label>
+                                    {% render_field form.linkedin id="id_linkedin" class="form-control" style="width: 90%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+                            <div class="second-group-links" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+
+                                <div class="github-link" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_github">GitHub</label>
+                                    {% render_field form.github id="id_github" class="form-control" style="width: 90%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="github-link" style="display: inline-block; margin-right: 16%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_email">Email</label>
+                                    {% render_field form.email class="form-control" id="id_email" style="width: 130%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+                            <hr>
+
+
+
+                            <h2 style="margin-top: 30px; margin-left: 2%; margin-bottom: 20px; text-decoration: none; color: #083d9a; font-size: 25px;">Additional section</h2>
+
+                            <div class="additional-section">
+
+                                <div class="image" style="margin-bottom: 20px;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_image">Image</label>
+                                    {% render_field form.image class="form-control" id="id_image" style="width: 90%; margin-left: 5%; height: 15px; font-size: 20px; padding-bottom: 33px; text-align: center; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="file" style="margin-bottom: 30px;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_additional_files">Additional file</label>
+                                    {% render_field form.additional_files id="id_additional_files" class="form-control" style="width: 90%; margin-left: 5%; height: 15px; font-size: 20px; padding-bottom: 33px; text-align: center; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+
+                            <hr>
+
+
+                            <input type="submit" class="btn btn-primary" value="{{ text_for_btn }}" style="font-size: 30px; margin-top: 10px; padding-top: 0; font-weight: 500; width: 100%; height: 50px; border-radius: 10px; border: 2px solid #858DF5; box-shadow: 10px 10px 10px #858DF5;">
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock main_content %}

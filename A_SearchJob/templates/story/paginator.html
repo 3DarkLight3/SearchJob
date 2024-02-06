@@ -1,0 +1,18 @@
+
+<ul class="pagination">
+    <li class="{% if stories.has_previous %} page-item {% else %} page-item disabled {% endif %}">
+        <a class="page-link" {% if stories.has_previous %} href="?{{ page_request_var }}={{ stories.previous_page_number }}{% if request.GET.q_story %}&q_story={{ request.GET.q_story }}{% endif %}" {% endif %}>
+            <span style="font-size: 25px;">Previous</span>
+        </a>
+    </li>
+
+    {% for page in paginator_range %}
+        <li class="page-item{% if page == '...' %} disabled {% endif %}" style="font-size: 25px;"><a class="page-link" style="{% if stories.number == page %}background-color: cornflowerblue; color: white{% endif %}" href="?{{ page_request_var }}={{ page }}{% if request.GET.q_story %}&q_story={{ request.GET.q_story }}{% endif %}">{{ page }}</a></li>
+    {% endfor %}
+
+    <li class="{% if stories.has_next %} page-item {% else %} page-item disabled {% endif %}">
+        <a class="page-link" {% if stories.has_next %} href="?{{ page_request_var }}={{ stories.next_page_number }}{% if request.GET.q_story %}&q_story={{ request.GET.q_story }}{% endif %}" {% endif %}>
+            <span style="font-size: 25px;">Next</span>
+        </a>
+    </li>
+</ul>

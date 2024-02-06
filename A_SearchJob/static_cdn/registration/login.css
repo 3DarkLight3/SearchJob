@@ -1,0 +1,30 @@
+
+.my-form {
+    width: 300px;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 30px;
+    background-color: #f0f0f0;
+    border: 2px solid #c5c5c5;
+    border-radius: 8px;
+    box-shadow: 10px 10px 14px #888;
+}
+
+.my-form input[type="text"],
+.my-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 25px;
+    border: 3px solid #ffcc6c;
+    border-radius: 10px;
+    box-shadow: 5px 5px 14px #fac588;
+}
+
+.my-form button {
+    font-size: 25px;
+    padding: 5px 83px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 10px 10px 14px #2f691e;
+}

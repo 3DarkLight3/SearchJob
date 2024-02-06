@@ -1,0 +1,83 @@
+{% extends 'story/base_story_block.html' %}
+
+{% block add_in_nav %}
+
+    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" style="display: flex;" action="" method="GET">
+        <input type="text" style="margin-right: 7px; height: 40px; font-size: 20px; margin-top: 8px; border-radius: 10px;" name="q_story" class="form-control" placeholder="Search story..." aria-label="Search" value="{{ request.GET.q_story }}">
+        <input type="submit" style="font-size: 20px; margin-top: 8px; border-radius: 10px;" value="Search" class="btn btn-outline-primary me-2">
+    </form>
+
+    <hr style="margin-top: 20px;">
+
+    <ul class="nav col-4 col-md-12 me-lg-auto mb-2 justify-content-center mb-md-0" style="font-size: 25px;">
+        <li style="padding-right: 10%"><a href="{% url 'story:story-own' %}" class="nav-link">My stories</a></li>
+        <li style="padding-right: 10%"><a href="{% url 'story:story-create' %}" class="nav-link">Create story</a></li>
+        <li><a href="{% url 'story:stories-liked' %}" class="nav-link">Liked stories</a></li>
+    </ul>
+
+    <hr style="margin-top: 20px;">
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    <hr style="margin-top: 70px; width: 90%; margin-left: 5%;">
+
+    <div class="album py-5">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-4">
+
+                {% for story in stories %}
+                    <div class="row" style="margin-top: 40px;">
+                        <div class="col-sm-12" style="padding-left: 8%;">
+                            <div class="thumbnail" style="border-radius: 10px; border: 3px solid rgba(130,196,15,0.85); box-shadow: 10px 10px 14px rgba(188,211,68,0.92);">
+                                <div class="caption" style="padding: 20px;">
+                                    <div class="card-body">
+                                        <h2 style="text-decoration: none; color: #4dab2f; text-align: center; font-weight: 500; font-size: 27px; margin-bottom: 20px;">
+                                            {{ story.headline }}
+                                        </h2>
+                                        <p style="font-weight: 500; font-size: 22px; color: #5b80b2">
+                                            Useful for {{ story.for_who }}
+                                        </p>
+                                        <p style="font-size: 20px; color: #205067; padding-bottom: 15px;">
+                                            {{ story.title|linebreaksbr|truncatewords:20 }}
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+
+                                            <div class="btn-group">
+                                                <a href="{{ story.get_url_to_story }}"><button type="button" class="btn btn-outline-primary" style="font-size: 15px; width: 100px; font-weight: 700; border: 3px solid #0d70fc; border-radius: 10px;">View</button></a>
+                                            </div>
+
+                                            {% if user.is_superuser or story.user == user %}
+                                                <a style="margin-right: 100px;" href="{% url 'story:story-delete' story.id %}"><button class="btn btn-outline-danger" id="delete" style="font-size: 15px; font-weight: 700; width: 100px; border-radius: 10px; border: 3px solid #d20f3e;">Delete</button></a>
+                                            {% endif %}
+
+                                            <small class="text-body-secondary">{{ story.timestamp|timesince }} тому</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+
+    {% if count_of_pages > 1 %}
+        <div class="col-sm-8 col-sm-offset-4" style="padding-left: 85px;">
+            {% include 'story/paginator.html' %}
+        </div>
+    {% endif %}
+
+    {% if not count_of_stories %}
+        <div class="col-sm-6 col-sm-offset-3" style="margin-bottom: 250px;">
+            <p style="font-size: 35px;"><b>Nothing was found for your request "{{ request.GET.q_story }}"</b></p>
+            <p style="font-size: 30px;">Try changing the query</p>
+        </div>
+    {% endif %}
+
+{% endblock main_content %}

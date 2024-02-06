@@ -1,0 +1,65 @@
+{% extends 'story/base_story_block.html' %}
+
+{% block add_in_nav %}
+    <div class="text-end" style="margin-right: 10px; margin-top: 10px;">
+        <a href="{% if user_side == 'employee' %}{% url 'employer:home-employer' %}{% else %}{% url 'employee:home-employee' %}{% endif %}"><button style="font-size: 20px; border-radius: 10px;" type="button" class="btn btn-outline-primary me-2">{% if user_side == 'employee' %}Employer{% else %}Employee{% endif %}</button></a>
+        <a href="{% url 'users:logout' %}"><button style="font-size: 20px; border-radius: 10px;" type="button" class="btn btn-outline-danger me-2">Logout</button></a>
+    </div>
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    {% if not count_of_stories %}
+        <div style="margin-left: 36%; margin-top: 10%;">
+            <h1>You have not created any resume yet.</h1>
+            <h1>To create, click <a href="{% url 'story:story-create' %}">here</a></h1>
+        </div>
+    {% endif %}
+
+
+    <div class="col-sm-8 col-sm-offset-2" style="margin-top: 50px; margin-bottom: 20px;">
+        {% for story in own_stories %}
+            <div class="row">
+                <div class="col-sm-20" style="margin-bottom: 20px;">
+                    <div class="thumbnail" style="border-radius: 10px; border: 3px solid rgba(130,196,15,0.85); box-shadow: 8px 8px 14px rgba(188,211,68,0.92);">
+                        <div class="caption" style="padding: 25px;">
+
+                            <div style="margin-bottom: 20px;">
+                                <p style="text-align: center; font-size: 30px; font-weight: 500; color: #fd9626">{{ story.headline }}</p>
+                            </div>
+
+
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+                                <div style="margin-left: 15%; margin-top: 7px;">
+                                    <a href="{{ story.get_url_to_story }}" style="text-decoration: none; font-size: 22px; color: #d77500; font-weight: 500;">The whole story</a>
+                                </div>
+                                <div style="margin-top: 7px;">
+                                    <a href="{% url 'story:story-delete' story.id %}" style="text-decoration: none; font-size: 22px; color: #ff1010; font-weight: 500; ">Delete</a>
+                                </div>
+                                <div style="margin-right: 15%; margin-top: 7px;">
+                                    <a href="{{ story.get_url_to_update_story }}" style="text-decoration: none; font-size: 22px; color: #d77500; font-weight: 500;">Update</a>
+                                </div>
+                            </div>
+
+                            <p style="font-size: 20px; margin-bottom: 20px; color: #256996; padding-left: 5%">
+                                {{ story.title }}
+                            </p>
+
+                            <p style="width: 100%; overflow: hidden; margin-top: 20px; font-weight: 400; font-size: 20px; margin-left: 20px;">
+                                <span style="padding-left: 30px;">User: {{ story.user }}</span>
+                                <span style="margin-left: 45%;">Useful for {{ story.for_who }}</span>
+                            </p>
+                            <hr>
+                            <p style="display: flex; justify-content: space-between; font-size: 17px; margin-top: 15px; color: rgba(119,13,72,0.75)">
+                                <span>Latest update: {{ story.update|timesince }} тому</span>
+                                <span>Published: {{ story.timestamp|timesince }} тому</span>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock main_content %}

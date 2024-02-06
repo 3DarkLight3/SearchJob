@@ -1,0 +1,13 @@
+<div style="margin-top: 10px;">
+    {% if user.is_authenticated %}
+        <div class="text-end" style="margin-right: 10px;">
+            <a href="{% url 'employer:home-employer' %}"><button style="font-size: 20px; border-radius: 10px;" type="button" class="btn btn-outline-primary me-2">Employer</button></a>
+            <a href="{% url 'users:logout' %}"><button style="font-size: 20px; border-radius: 10px;" type="button" class="btn btn-outline-danger me-2">Logout</button></a>
+        </div>
+    {% else %}
+        <div class="text-end" style="margin-right: 10px;">
+            <a href="{% url 'users:login' %}"><button style="font-size: 20px; border-radius: 10px;" type="button" class="btn btn-outline-primary">Login</button></a>
+            <a href="{% url 'users:register' %}"><button style="font-size: 20px; border-radius: 10px;" type="button" class="btn btn-outline-success">Register</button></a>
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,65 @@
+{% extends 'employee/base_employee_block.html' %}
+
+{% block add_in_nav %}
+
+    <ul class="nav col-12 col-md-6 me-lg-auto mb-2 justify-content-center mb-md-0" style="font-size: 25px;">
+        <li><a href="{% url 'employee:home-employee' %}" class="nav-link px-2">Home</a></li>
+        <li><a href="{% url 'employee:create' %}" class="nav-link px-2">Create</a></li>
+        <li><a href="{% url 'employee:resumes' %}" class="nav-link px-2 link-secondary">My resumes</a></li>
+        <li><a href="{% url 'employee:liked' %}" class="nav-link px-2">Liked</a></li>
+        <li><a href="{% url 'story:home-story' %}" class="nav-link px-2">Stories</a></li>
+    </ul>
+
+    {% include 'employee/login_in_nav.html' %}
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    {% if not count_of_resumes %}
+        <div style="margin-left: 36%; margin-top: 15%;">
+            <h1>You have not created any resume yet.</h1>
+            <h1>To create, click <a href="{% url 'employee:create' %}">here</a></h1>
+        </div>
+    {% endif %}
+
+
+    <div class="col-sm-8 col-sm-offset-2" style="margin-top: 50px; margin-bottom: 20px;">
+        {% for resume in resumes %}
+            <div class="row">
+                <div class="col-sm-20" style="margin-bottom: 20px;">
+                    <div class="thumbnail" style="border-radius: 10px; border: 3px solid rgba(130,196,15,0.85); box-shadow: 8px 8px 14px rgba(188,211,68,0.92);">
+                        <div class="caption" style="padding: 25px;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <div style="margin-left: 2%; margin-top: 7px;">
+                                    <a href="{{ resume.get_url_to_whole_resume }}" style="text-decoration: none; font-size: 22px; color: #d77500; font-weight: 500;">The whole resume</a>
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <p style="text-align: center; font-size: 28px; font-weight: 500; color: #fd9626">{{ resume.type_of_job }}</p>
+                                </div>
+                                <div style="margin-right: 2%; margin-top: 7px;">
+                                    <a href="{{ resume.get_url_to_resume }}" style="text-decoration: none; font-size: 22px; color: #d77500; font-weight: 500;">Update</a>
+                                </div>
+                            </div>
+
+                            <p style="width: 100%; overflow: hidden; margin-top: 20px; font-weight: 400; font-size: 20px; margin-left: 20px;">
+                                <span style="padding-right: 100px;">{{ resume.name }}</span>
+                                <span style="padding-right: 100px;">{{ resume.birth }}</span>
+                                <span>{{ resume.phone_number }}</span>
+                                <span style="float: right; margin-bottom: 15px; margin-right: 50px; font-weight: 500;">{{ resume.main_programming_language }}</span>
+                            </p>
+                            <hr>
+                            <p style="display: flex; justify-content: space-between; font-size: 17px; margin-top: 15px; color: rgba(119,13,72,0.75)">
+                                <span>Latest update: {{ resume.update|timesince }} тому</span>
+                                <a href="{% url 'employee:delete' resume.id %}" style="text-decoration: none; font-size: 22px; color: #ff1010; font-weight: 500; ">Delete</a>
+                                <span>Published: {{ resume.timestamp|timesince }} тому</span>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock main_content %}

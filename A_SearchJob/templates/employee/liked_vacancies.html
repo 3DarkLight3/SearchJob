@@ -1,0 +1,62 @@
+{% extends 'employee/base_employee_block.html' %}
+
+{% block add_in_nav %}
+
+    <ul class="nav col-12 col-md-6 me-lg-auto mb-2 justify-content-center mb-md-0" style="font-size: 25px;">
+        <li><a href="{% url 'employee:home-employee' %}" class="nav-link px-2">Home</a></li>
+        <li><a href="{% url 'employee:create' %}" class="nav-link px-2">Create</a></li>
+        <li><a href="{% url 'employee:resumes' %}" class="nav-link px-2">My resumes</a></li>
+        <li><a href="{% url 'employee:liked' %}" class="nav-link px-2 link-secondary">Liked</a></li>
+        <li><a href="{% url 'story:home-story' %}" class="nav-link px-2">Stories</a></li>
+    </ul>
+
+    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" style="display: flex;" action="" method="GET">
+        <input type="text" style="margin-right: 7px; height: 40px; font-size: 20px; margin-top: 8px; border-radius: 10px;" name="q_liked_v" class="form-control" placeholder="Search vacancy..." aria-label="Search" value="{{ request.GET.q_liked_v }}">
+        <input type="submit" style="font-size: 20px; margin-top: 8px; border-radius: 10px;" value="Search" class="btn btn-outline-primary me-2">
+    </form>
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    {% if not count_of_vacancies %}
+        {% if not add_query %}
+            <div style="margin-left: 31%; margin-top: 5%;">
+                <h1 style="font-size: 35px;">You have not liked any vacancy yet.</h1>
+            </div>
+        {% else %}
+            <div class="col-sm-6 col-sm-offset-3" style="margin-top: 100px;">
+                <p style="font-size: 35px;"><b>Nothing was found for your request "{{ request.GET.q_liked_v }}"</b></p>
+                <p style="font-size: 30px;">Try changing the query</p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+
+    <div class="col-sm-8 col-sm-offset-2" style="margin-top: 50px; margin-bottom: 20px;">
+        {% for vacancy in vacancies %}
+            <div class="row">
+                <div class="col-sm-20" style="margin-bottom: 20px;">
+                    <div class="thumbnail" style="border-radius: 10px; border: 3px solid rgba(130,196,15,0.85); box-shadow: 8px 8px 14px rgba(188,211,68,0.92);">
+                        <div class="caption" style="padding: 25px;">
+
+                            <div style="margin-bottom: 10px; text-align: center;">
+                                <a href="{{ vacancy.get_url_to_vacancy }}" style="text-decoration: none; font-size: 28px; font-weight: 500; color: #fd9626">{{ vacancy.type_of_job }}</a>
+                            </div>
+
+                            <p style="width: 100%; overflow: hidden; margin-top: 20px; font-weight: 400; font-size: 20px; margin-left: 20px;">
+                                <span style="padding-right: 200px; font-size: 23px; font-weight: 500;">{{ vacancy.name_of_company }}</span>
+                                <span>{{ vacancy.main_programming_language }}</span>
+                                <span style="float: right; margin-right: 50px; margin-top: 2px;">{{ vacancy.name_of_job }}</span>
+                            </p>
+                            <hr>
+                            <p style="font-size: 20px; margin-left: 20px; color: #888888">Published: {{ vacancy.timestamp|timesince }} тому</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock main_content %}

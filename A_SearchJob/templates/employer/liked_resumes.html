@@ -1,0 +1,61 @@
+{% extends 'employer/base_employer_block.html' %}
+
+{% block add_in_nav %}
+
+    <ul class="nav col-12 col-md-6 me-lg-auto mb-2 justify-content-center mb-md-0" style="font-size: 25px;">
+        <li><a href="{% url 'employer:home-employer' %}" class="nav-link px-2">Home</a></li>
+        <li><a href="{% url 'employer:create' %}" class="nav-link px-2">Create</a></li>
+        <li><a href="{% url 'employer:vacancies' %}" class="nav-link px-2">My vacancies</a></li>
+        <li><a href="{% url 'employer:liked' %}" class="nav-link px-2 link-secondary">Liked</a></li>
+        <li><a href="{% url 'story:home-story' %}" class="nav-link px-2">Stories</a></li>
+    </ul>
+
+    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" style="display: flex;" role="search" action="" method="GET">
+        <input type="text" style="margin-right: 7px; height: 40px; font-size: 20px; margin-top: 8px; border-radius: 10px;" name="q_liked_r" class="form-control" placeholder="Search resume..." aria-label="Search" value="{{ request.GET.q_liked_r }}">
+        <input type="submit" style="font-size: 20px; margin-top: 8px; border-radius: 10px;" value="Search" class="btn btn-outline-primary me-2">
+    </form>
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    {% if not count_of_resumes %}
+        {% if not add_query %}
+            <div style="margin-left: 31%; margin-top: 5%;">
+                <h1 style="font-size: 35px;">You have not liked any resume yet.</h1>
+            </div>
+        {% else %}
+            <div class="col-sm-6 col-sm-offset-3" style="margin-top: 100px;">
+                <p style="font-size: 35px;"><b>Nothing was found for your request "{{ request.GET.q_liked_r }}"</b></p>
+                <p style="font-size: 30px;">Try changing the query</p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <div class="col-sm-8 col-sm-offset-2" style="margin-top: 50px; margin-bottom: 20px;">
+        {% for resume in resumes %}
+            <div class="row">
+                <div class="col-sm-20" style="margin-bottom: 20px;">
+                    <div class="thumbnail" style="border-radius: 10px; border: 3px solid rgba(130,196,15,0.85); box-shadow: 8px 8px 14px rgba(188,211,68,0.92);">
+                        <div class="caption" style="padding: 25px;">
+
+                            <div style="margin-bottom: 10px; text-align: center;">
+                                <a href="{{ resume.get_url_to_whole_resume }}" style="text-decoration: none; font-size: 28px; font-weight: 500; color: #fd9626">{{ resume.type_of_job }}</a>
+                            </div>
+
+                            <p style="width: 100%; overflow: hidden; margin-top: 20px; font-weight: 400; font-size: 20px; margin-left: 20px;">
+                                <span style="padding-right: 200px; font-size: 23px; font-weight: 500;">{{ resume.name }}</span>
+                                <span>{{ resume.birth }}</span>
+                                <span style="float: right; margin-right: 50px; margin-top: 2px;">{{ resume.main_programming_language }}</span>
+                            </p>
+                            <hr>
+                            <p style="font-size: 20px; margin-left: 20px; color: #888888">Published: {{ resume.timestamp|timesince }} тому</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock main_content %}

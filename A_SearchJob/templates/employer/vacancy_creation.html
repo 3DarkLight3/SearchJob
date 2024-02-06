@@ -1,0 +1,196 @@
+{% extends 'employer/base_employer_block.html' %}
+{% load widget_tweaks %}
+
+{% block add_in_nav %}
+
+    <ul class="nav col-12 col-md-6 me-lg-auto mb-2 justify-content-center mb-md-0" style="font-size: 25px;">
+        <li><a href="{% url 'employer:home-employer' %}" class="nav-link px-2">Home</a></li>
+        <li><a href="{% url 'employer:create' %}" class="nav-link px-2 link-secondary">Create</a></li>
+        <li><a href="{% url 'employer:vacancies' %}" class="nav-link px-2">My vacancies</a></li>
+        <li><a href="{% url 'employer:liked' %}" class="nav-link px-2">Liked</a></li>
+        <li><a href="{% url 'story:home-story' %}" class="nav-link px-2">Stories</a></li>
+    </ul>
+
+    {% include 'employer/login_in_nav.html' %}
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    <div class="col-sm-6 col-sm-offset-3" style="margin-bottom: 10px; margin-top: 50px;">
+        <div class="row">
+            <div class="col-sm-20">
+                <div class="thumbnail" style="box-shadow: 6px 6px 14px #ffcc6c; border-radius: 10px; border: 3px solid #ffcc6c;">
+                    <div class="caption" style="padding: 25px;">
+
+                        <h2 style="text-align: center; font-size: 35px; margin-bottom: 25px; font-weight: 500; color: #0d6efc">Your vacancy</h2>
+                        <hr>
+
+                        <form action="" method="POST" enctype="multipart/form-data">
+
+                            {% csrf_token %}
+
+                            <h2 style="margin-top: 40px; margin-left: 2%; margin-bottom: 20px; text-decoration: none; color: #083d9a; font-size: 25px;">Company information</h2>
+
+                            <div class="company-info-1" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="input-name" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_name_of_company">Company name</label>
+                                    {% render_field form.name_of_company class="form-control" id="id_name_of_company" style="width: 110%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="input-location" style="display: inline-block; margin-right: 10%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_location">Location</label>
+                                    {% render_field form.location class="form-control" id="id_location" style="width: 110%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+
+                            <div class="company-info-2" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="input-phone" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_phone_number">Phone number</label>
+                                    {% render_field form.phone_number class="form-control" id="id_phone_number" style="width: 110%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="input-email" style="display: inline-block; margin-right: 10%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_email">Email</label>
+                                    {% render_field form.email class="form-control" id="id_email" style="width: 110%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+                            <hr>
+
+
+                            <h2 style="margin-top: 40px; margin-left: 2%; margin-bottom: 20px; text-decoration: none; color: #083d9a; font-size: 25px;">Main information</h2>
+
+                            <div class="main-info-1" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="name-of-job" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_name_of_job">Name of job</label>
+                                    {% render_field form.name_of_job class="form-control" id="id_name_of_job" style="width: 150%; height: 40px; font-size: 18px; padding: 10; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="min-exp" style="display: inline-block; margin-right: 3%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_min_experience">Min. experience</label>
+                                    {% render_field form.min_experience class="form-control" id="id_min_experience" style="width: 90%; height: 40px; font-size: 18px; padding: 0; text-align: center; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+
+                            <div class="main-info-2" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="main-prog-lg" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_main_programming_language">Language</label>
+                                    {% render_field form.main_programming_language class="form-control" id="id_main_programming_language" style="text-align: center; width: 215%; height: 40px; font-size: 18px; padding: 0; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="type-of-job" style="display: inline-block; margin-right: 14%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_type_of_job">Type of job</label>
+                                    {% render_field form.type_of_job class="form-control" id="id_type_of_job" style="width: 119%; height: 40px; font-size: 18px; padding: 0; text-align: center; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+
+                            <div class="main-info-3">
+                                <div class="requirements" style="margin-bottom: 20px;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_requirements_of_job">Requirements</label>
+                                    {% render_field form.requirements_of_job class="form-control" id="id_requirements_of_job" style="width: 89%; margin-left: 5%; height: 50px; font-size: 18px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;"%}
+                                </div>
+
+                                <div class="responsibilities" style="margin-bottom: 30px;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_responsibilities_of_job">Responsibilities</label>
+                                    {% render_field form.responsibilities_of_job class="form-control" id="id_responsibilities_of_job" style="width: 89%; margin-left: 5%; height: 50px; font-size: 18px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;"%}
+                                </div>
+                            </div>
+
+                            <hr>
+
+
+                            <h2 style="margin-top: 40px; margin-left: 2%; margin-bottom: 20px; text-decoration: none; color: #083d9a; font-size: 25px;">Add. information</h2>
+
+                            <div class="add-info-1" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="work-time" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_time_work">Work time</label>
+                                    {% render_field form.time_work class="form-control" id="id_time_work" style="text-align: center; width: 185%; height: 40px; font-size: 18px; padding: 0px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="required-english" style="display: inline-block; margin-right: 22%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_required_english">Required English</label>
+                                    {% render_field form.required_english class="form-control" id="id_required_english" style="text-align: center; width: 150%; height: 40px; font-size: 18px; padding: 0px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+
+                            <div class="add-info-2" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="lower-salary" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_lower_salary">Min. salary</label>
+                                    {% render_field form.lower_salary class="form-control" id="id_lower_salary" style="text-align: center; width: 80%; height: 40px; font-size: 18px; padding: 0px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="higher-salary" style="display: inline-block;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_higher_salary">Max. salary</label>
+                                    {% render_field form.higher_salary class="form-control" id="id_higher_salary" style="text-align: center; width: 80%; height: 40px; font-size: 18px; padding: 0px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="remote-job" style="display: flex; width: 180px; margin-top: 22px;">
+                                    <label style="margin-left: 4%; color: rgba(51,126,255,0.84); margin-right: 20px; font-size: 18px; margin-bottom: 5px;" for="id_remote_job">Remote job</label>
+                                    <input type="checkbox" style="width: 18px; height: 18px; margin-top: 5px; color: #62d91b" name="remote_job" id="id_remote_job" {% if remote_job %}checked{% endif %}>
+                                </div>
+
+                            </div>
+
+
+                            <div class="add-info-3">
+
+                                <div class="benefits-of-job" style="margin-bottom: 20px;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_benefits_of_job">Benefits to work in your company</label>
+                                    {% render_field form.benefits_of_job class="form-control" id="id_benefits_of_job" style="width: 89%; margin-left: 5%; height: 50px; font-size: 18px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;"%}
+                                </div>
+
+                            </div>
+
+
+                            <hr>
+
+
+                            <h2 style="margin-top: 40px; margin-left: 2%; margin-bottom: 20px; text-decoration: none; color: #083d9a; font-size: 25px;">Links</h2>
+
+
+                            <div class="links" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+
+                                <div class="own-website-link" style="display: inline-block; margin-left: 5%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_link_to_own_website">Own website</label>
+                                    {% render_field form.link_to_own_website id="id_link_to_own_website" class="form-control" style="width: 110%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                                <div class="linkedin-link" style="display: inline-block; margin-right: 10%;">
+                                    <label style="margin-left: 7%; color: rgba(51,126,255,0.84); font-size: 18px; margin-bottom: 5px;" for="id_linkedin">LinkedIn</label>
+                                    {% render_field form.linkedin id="id_linkedin" class="form-control" style="width: 110%; height: 40px; font-size: 18px; padding: 10px; color: #0d6efc; border: 3px solid #ffcc6c; border-radius: 10px; box-shadow: 5px 5px 12px #ffcc6c;" %}
+                                </div>
+
+                            </div>
+
+                            <hr>
+
+
+                            <input type="submit" class="btn btn-primary" value="{{ text_for_btn }}" style="font-size: 30px; padding-top: 0; margin-top: 10px; font-weight: 500; width: 100%; height: 50px; border-radius: 10px; border: 2px solid #858DF5; box-shadow: 10px 10px 10px #858DF5;">
+
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock main_content %}
+

@@ -1,0 +1,73 @@
+
+.my-form {
+    width: 600px;
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 2px solid #c5c5c5;
+    border-radius: 8px;
+    box-shadow: 10px 10px 14px #888;
+}
+
+
+.my-form input[type="text"],
+.my-form input[type="password"] {
+    width: 30%;
+    padding: 10px;
+    margin-bottom: 25px;
+    border: 3px solid #ffcc6c;
+    border-radius: 10px;
+    box-shadow: 5px 5px 14px #fac588;
+}
+
+.my-form label[for="id_username"] {
+    margin-left: 23%;
+    margin-right: 1%;
+}
+
+.my-form input[type="text"][name="username"] {
+    margin-bottom: 20px;
+    width: 30%;
+}
+
+span[class="helptext"] {
+    margin-left: 10px;
+    font-size: 15px;
+}
+
+
+label[for="id_password1"] {
+    margin: 65px 1% 0 29%;
+}
+
+.my-form input[type="password"][name="password1"] {
+    margin-bottom: 0;
+    width: 30%;
+}
+
+
+span[class="helptext"] ul{
+    margin-top: 0;
+    text-align: left;
+    margin-left: 20px;
+}
+
+label[for="id_password2"] {
+    margin: 45px 1% 0 18%;
+}
+
+.my-form input[type="password"][name="id_password2"] {
+    margin-bottom: 0;
+}
+
+.my-form button {
+    font-size: 25px;
+    padding: 5px 83px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 30px;
+    box-shadow: 10px 10px 14px #1c30af;
+}

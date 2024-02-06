@@ -1,0 +1,65 @@
+{% extends 'employer/base_employer_block.html' %}
+
+{% block add_in_nav %}
+
+    <ul class="nav col-12 col-md-6 me-lg-auto mb-2 justify-content-center mb-md-0" style="font-size: 25px;">
+        <li><a href="{% url 'employer:home-employer' %}" class="nav-link px-2">Home</a></li>
+        <li><a href="{% url 'employer:create' %}" class="nav-link px-2">Create</a></li>
+        <li><a href="{% url 'employer:vacancies' %}" class="nav-link px-2 link-secondary">My vacancies</a></li>
+        <li><a href="{% url 'employer:liked' %}" class="nav-link px-2">Liked</a></li>
+        <li><a href="{% url 'story:home-story' %}" class="nav-link px-2">Stories</a></li>
+    </ul>
+
+    {% include 'employer/login_in_nav.html' %}
+
+{% endblock add_in_nav %}
+
+{% block main_content %}
+
+    {% if not count_of_vacancies %}
+        <div style="margin-left: 36%; margin-top: 10%;">
+            <h1>You have not created any vacancy yet.</h1>
+            <h1>To create, click <a href="{% url 'employer:create' %}">here</a></h1>
+        </div>
+    {% endif %}
+
+    <div class="col-sm-8 col-sm-offset-2" style="margin-top: 50px; margin-bottom: 20px;">
+        {% for vacancy in vacancies %}
+            <div class="row">
+                <div class="col-sm-20" style="margin-bottom: 20px;">
+                    <div class="thumbnail" style="border-radius: 10px; border: 3px solid rgba(130,196,15,0.85); box-shadow: 8px 8px 14px rgba(188,211,68,0.92);">
+                        <div class="caption" style="padding: 25px;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <div style="margin-left: 2%; margin-top: 7px;">
+                                    <a href="{{ vacancy.get_url_to_vacancy }}" style="text-decoration: none; font-size: 22px; color: #d77500; font-weight: 500;">The whole vacancy</a>
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <p style="text-align: center; font-size: 28px; font-weight: 500; color: #fd9626">{{ vacancy.name_of_job }}</p>
+                                </div>
+                                <div style="margin-right: 2%; margin-top: 7px;">
+                                    <a href="{{ vacancy.get_url_to_update_vacancy }}" style="text-decoration: none; font-size: 22px; color: #d77500; font-weight: 500;">Update</a>
+                                </div>
+                            </div>
+
+                            <p style="width: 100%; overflow: hidden; margin-top: 20px; font-weight: 400; font-size: 20px; margin-left: 20px;">
+                                <span style="padding-right: 30px;">{{ vacancy.name_of_company }}</span>
+                                <span style="padding-right: 30px;">{{ vacancy.location }}</span>
+                                <span>{{ vacancy.phone_number }}</span>
+                                <span style="margin-bottom: 15px; margin-left: 50px; font-weight: 500;">{{ vacancy.main_programming_language }}</span>
+                            </p>
+                            <hr>
+                            <p style="display: flex; justify-content: space-between; font-size: 17px; margin-top: 15px; color: rgba(119,13,72,0.75)">
+                                <span>Latest update: {{ vacancy.update|timesince }} тому</span>
+                                <a href="{% url 'employer:delete' vacancy.id %}" style="text-decoration: none; font-size: 22px; color: #ff1010; font-weight: 500; ">Delete</a>
+                                <span>Published: {{ vacancy.timestamp|timesince }} тому</span>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock main_content %}
+
